@@ -56,10 +56,14 @@ final class ChaosController: ObservableObject {
         guard popupWindows.count < 12 else { return }
 
         let item = messages[Int.random(in: 0..<messages.count)]
+        var popupWindow: NSWindow?
         let popup = FakePopupView(
             title: item.0,
             message: item.1,
-            onDismiss: { [weak self] in self?.removeClosedWindows() }
+            onDismiss: { [weak self] in
+                popupWindow?.close()
+                self?.removeClosedWindows()
+            }
         )
 
         let width: CGFloat = 330
@@ -76,6 +80,7 @@ final class ChaosController: ObservableObject {
             backing: .buffered,
             defer: false
         )
+        popupWindow = window
         window.title = "Systemmeldung"
         window.level = .floating
         window.isReleasedWhenClosed = false
@@ -104,7 +109,8 @@ struct FakePopupView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
-                Image(systemName: "exclamationmark.triangle.fill")
+                Text("⚠")
+                    .font(.system(size: 18, weight: .bold))
                     .foregroundColor(Color(red: 0.95, green: 0.24, blue: 0.19))
                 Text(title)
                     .font(.system(size: 12, weight: .bold))
@@ -121,9 +127,7 @@ struct FakePopupView: View {
                 Spacer()
                 Button("Na gut") {
                     onDismiss()
-                    NSApp.keyWindow?.close()
                 }
-                .keyboardShortcut(.defaultAction)
             }
         }
         .padding(16)
