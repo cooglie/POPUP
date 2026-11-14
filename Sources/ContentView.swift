@@ -32,7 +32,6 @@ struct ContentView: View {
                     }
 
                     Slider(value: $chaos.intensity, in: 0.2...1.0)
-                        .accentColor(Color(red: 1, green: 0.27, blue: 0.22))
 
                     HStack {
                         Text("Ruhig")
@@ -44,12 +43,12 @@ struct ContentView: View {
 
                     Toggle(isOn: $chaos.soundEnabled) {
                         HStack(spacing: 8) {
-                            Image(systemName: "speaker.wave.2.fill")
+                            Text("♪")
                             Text("Zufällige Soundeffekte")
                         }
                         .foregroundColor(.white)
                     }
-                    .toggleStyle(SwitchToggleStyle(tint: Color(red: 1, green: 0.3, blue: 0.24)))
+                    .toggleStyle(SwitchToggleStyle())
                     .padding(.top, 4)
                 }
                 .padding(20)
@@ -59,7 +58,7 @@ struct ContentView: View {
                 HStack(spacing: 12) {
                     Button(action: { chaos.startChaos() }) {
                         HStack {
-                            Image(systemName: "flame.fill")
+                            Text("🔥")
                             Text(chaos.isRunning ? "CHAOS LÄUFT" : "START CHAOS")
                         }
                         .font(.system(size: 14, weight: .bold))
@@ -74,7 +73,7 @@ struct ContentView: View {
 
                     Button(action: { chaos.stopChaos() }) {
                         HStack {
-                            Image(systemName: "stop.fill")
+                            Text("■")
                             Text("NOTFALL-STOPP")
                         }
                         .font(.system(size: 14, weight: .bold))
@@ -88,7 +87,7 @@ struct ContentView: View {
                 }
 
                 HStack(alignment: .top, spacing: 10) {
-                    Image(systemName: "info.circle.fill")
+                    Text("ⓘ")
                         .foregroundColor(Color(red: 1, green: 0.65, blue: 0.25))
                     Text("Popup Apocalypse erzeugt ausschließlich harmlose Fake-Fenster. Es verändert keine Systemeinstellungen und schließt keine echten Apps. Maximal 12 Popups gleichzeitig.")
                         .font(.system(size: 11))
@@ -117,7 +116,7 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color(red: 0.85, green: 0.13, blue: 0.13))
                     .frame(width: 58, height: 58)
-                Image(systemName: "exclamationmark.triangle.fill")
+                Text("⚠")
                     .font(.system(size: 27, weight: .bold))
                     .foregroundColor(.white)
             }
