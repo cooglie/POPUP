@@ -33,10 +33,12 @@ final class ChaosController: ObservableObject {
         spawnPopup()
 
         let interval = max(0.45, 2.2 - (intensity * 1.5))
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+        let chaosTimer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.spawnPopup()
         }
+        timer = chaosTimer
+        RunLoop.main.add(chaosTimer, forMode: .common)
     }
 
     func stopChaos() {
@@ -83,9 +85,14 @@ final class ChaosController: ObservableObject {
         popupWindow = window
         window.title = "Systemmeldung"
         window.level = .floating
+        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         window.isReleasedWhenClosed = false
         window.contentView = NSHostingView(rootView: popup)
+
+        // Ensure macOS brings the fake popup in front of the main app window.
+        NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
 
         popupWindows.append(window)
         popupCount = popupWindows.count
